@@ -1,18 +1,14 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
+import { CssBaseline, ThemeProvider } from '@mui/material'
+import { lightTheme, darkTheme } from '../themes'; // Imported themes from ./themes
 
-// Creating a default basic theme, we can use a light or dark mode
-const basicTheme = createTheme({
-  palette: {
-    mode: 'dark'
-  }
-});
+
 
 // We add Theme provider and Cssbaseline to apply the styles to the whole project
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={basicTheme}>
+    <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Component {...pageProps} />
     </ThemeProvider>
