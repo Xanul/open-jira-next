@@ -22,7 +22,18 @@ export const lightTheme = createTheme({
   },
 
   components: {
-
+    MuiAppBar: {
+      defaultProps:{
+        elevation: 0
+      }
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: '#FFF'
+        }
+      }
+    }
   }
 
 });
