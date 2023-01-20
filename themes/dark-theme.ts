@@ -13,6 +13,8 @@ export const darkTheme = createTheme({
       main: red.A400,
     },
   },
+
+    // This can change the style of MaterialUI components
   components: {
     MuiAppBar: {
       defaultProps:{

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Head from "next/head";
 import { Box } from "@mui/material";
-import { Navbar } from "../ui";
+import { Navbar, Sidebar } from "../ui";
 
 // We need to 
 interface Props {
@@ -17,7 +17,7 @@ export const Layout: FC<Props> = ({ title = "OpenJira App", children }) => {
         <title>{title}</title>
       </Head>
       <Navbar />
-      {/* Sidebar */}
+      <Sidebar />
       <Box sx={{ padding: "10px 20px" }}>
         {children}
       </Box>

@@ -21,6 +21,7 @@ export const lightTheme = createTheme({
     }
   },
 
+  // This can change the style of MaterialUI components
   components: {
     MuiAppBar: {
       defaultProps:{
