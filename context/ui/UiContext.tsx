@@ -5,6 +5,9 @@ import { createContext } from 'react';
 // We define how we want out context to look with their types
 interface ContextProps {
   sidemenuOpen: boolean,
+  // Methods
+  openSideMenu: () => void,
+  closeSideMenu: () => void,
 }
 
 
