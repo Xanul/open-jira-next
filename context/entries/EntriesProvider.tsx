@@ -13,19 +13,19 @@ const ENTRIES_INITIAL_STATE: EntriesState = {
   entries: [
     {
       _id: uuidv4(),
-      description: 'lorem ipsum prodient dolo duis et dolor laborum veniam ea laboris qui consequat',
+      description: 'Pendiente: lorem ipsum prodient dolo duis et dolor laborum veniam ea laboris qui consequat',
       status: 'pending',
       createdAt: Date.now()
     },
     {
       _id: uuidv4(),
-      description: 'lorem ipsum prodient dolo duis et dolor laborum veniam ea laboris qui consequat',
+      description: 'En Progreso: lorem ipsum prodient dolo duis et dolor laborum veniam ea laboris qui consequat',
       status: 'in-progress',
       createdAt: Date.now() - 1000000,
     },
     {
       _id: uuidv4(),
-      description: 'lorem ipsum prodient dolo duis et dolor laborum veniam ea laboris qui consequat',
+      description: 'Terminada: lorem ipsum prodient dolo duis et dolor laborum veniam ea laboris qui consequat',
       status: 'finished',
       createdAt: Date.now() - 200000,
     }
