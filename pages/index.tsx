@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import { Card, CardContent, CardHeader, Grid } from '@mui/material';
 import { Layout } from '../components/layouts';
 import { EntryList } from '../components/ui';
+import { NewEntry } from '../components/ui/NewEntry';
 
 
 // We use typography instead of default HTML tag to use materialUI options
@@ -16,7 +17,7 @@ const HomePage: NextPage = () => {
           <Card sx={{ height: 'calc(100vh - 100px)'}}>
             <CardHeader title="Pendientes"/>
             <CardContent>
-              {/* Agregar una nueva entrada */}
+              <NewEntry />
               <EntryList status='pending'/>
             </CardContent>
           </Card>
