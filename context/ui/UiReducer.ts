@@ -11,6 +11,7 @@ import { UiState } from "./";
 type UiActionType = 
   | { type: 'UI - Open Sidebar' }
   | { type: 'UI - Close Sidebar' }
+  | { type: 'UI - Set isAddingEntry', payload: boolean }
 
 // The reducer cannot modify the state, it must retrun a new state 
 export const uiReducer = (state: UiState, action: UiActionType):UiState => {
@@ -25,6 +26,11 @@ export const uiReducer = (state: UiState, action: UiActionType):UiState => {
       return {
         ...state,
         sidemenuOpen: false,
+      }
+    case 'UI - Set isAddingEntry':
+      return {
+        ...state,
+        isAddingEntry: action.payload 
       }
   
     default:

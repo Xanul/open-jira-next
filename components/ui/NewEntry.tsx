@@ -5,10 +5,13 @@ import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
 import { useContext } from 'react';
 import { EntriesContext } from '../../context/entries/EntriesContext';
+import { UiContext } from '../../context/ui';
 
 export const NewEntry = () => {
   
-  const [isAdding, setIsAdding] = useState(false);
+  
+  const { isAddingEntry, setIsAddingEntry } = useContext(UiContext);
+
 
   const [inputValue, setInputValue] = useState("");
   const [touched, setTouched] = useState(false);
@@ -26,7 +29,7 @@ export const NewEntry = () => {
     addNewEntry(inputValue);
 
     setInputValue('');
-    setIsAdding(false);
+    setIsAddingEntry(false);
     setTouched(false);
 
   }
@@ -35,7 +38,7 @@ export const NewEntry = () => {
     <Box sx={{marginBottom: 2, paddingX:1}}>
 
       {
-        isAdding ? (
+        isAddingEntry ? (
           <>
             <TextField 
               fullWidth
@@ -57,7 +60,7 @@ export const NewEntry = () => {
                 color='error'
                 sx={{ opacity: 0.8 }}
                 onClick={() => {
-                  setIsAdding(false)
+                  setIsAddingEntry(false)
                 }}
 
               >
@@ -81,7 +84,7 @@ export const NewEntry = () => {
               startIcon={<AddIcon />}
               fullWidth
               variant='outlined'
-              onClick={() => setIsAdding(true)}
+              onClick={() => setIsAddingEntry(true)}
             >
               Agregar Tarea
             </Button>
