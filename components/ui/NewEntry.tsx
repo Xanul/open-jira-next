@@ -3,6 +3,8 @@ import { Button, TextField } from '@mui/material'
 import { Box } from '@mui/system';
 import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
+import { useContext } from 'react';
+import { EntriesContext } from '../../context/entries/EntriesContext';
 
 export const NewEntry = () => {
   
@@ -10,6 +12,8 @@ export const NewEntry = () => {
 
   const [inputValue, setInputValue] = useState("");
   const [touched, setTouched] = useState(false);
+
+  const { addNewEntry } = useContext(EntriesContext);
 
   const onTextFieldChange = ( event: ChangeEvent<HTMLInputElement> ) => {
     setInputValue( event.target.value )
@@ -19,7 +23,11 @@ export const NewEntry = () => {
 
     if (inputValue.length === 0) return;
 
-    console.log(inputValue);
+    addNewEntry(inputValue);
+
+    setInputValue('');
+    setIsAdding(false);
+    setTouched(false);
 
   }
 
