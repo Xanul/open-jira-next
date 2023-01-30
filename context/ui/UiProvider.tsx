@@ -5,12 +5,14 @@ import { UiContext, uiReducer } from './';
 export interface UiState {
   sidemenuOpen: boolean;
   isAddingEntry: boolean;
+  isDragging: boolean;
 }
 
 // We create our initial state with the interface of the UiState
 const UI_INITIAL_STATE: UiState = {
   sidemenuOpen: false,
   isAddingEntry: false,
+  isDragging: false,
 }
 
 export const UiProvider:FC<PropsWithChildren> = ({ children }) => {
@@ -29,6 +31,14 @@ export const UiProvider:FC<PropsWithChildren> = ({ children }) => {
     dispatch({type: 'UI - Set isAddingEntry', payload: isAdding})
   }
 
+  const startDragging = () => {
+    dispatch({type: 'UI - Start Dragging'})
+  }
+
+  const endDragging = () => {
+    dispatch({type: 'UI - End Dragging'})
+  }
+
   // In the value we have to put the arguments defined in the ContextProvicer interface 
   return (
     <UiContext.Provider value={{
@@ -37,7 +47,9 @@ export const UiProvider:FC<PropsWithChildren> = ({ children }) => {
       // Methods
       openSideMenu,
       closeSideMenu,
-      setIsAddingEntry
+      setIsAddingEntry,
+      startDragging,
+      endDragging
     }}>
       { children }
     </UiContext.Provider>
