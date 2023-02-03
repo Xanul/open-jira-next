@@ -1,11 +1,7 @@
-import React, { FC, PropsWithChildren, useEffect, useReducer } from 'react';
-import { Entry } from '../../interfaces';
-import { EntriesContext, entriesReducer } from './';
-import { v4 as uuidv4 } from 'uuid';
-import { entriesApi } from '../../apis';
-
-
-
+import React, { FC, PropsWithChildren, useEffect, useReducer } from "react";
+import { Entry } from "../../interfaces";
+import { EntriesContext, entriesReducer } from "./";
+import { entriesApi } from "../../apis";
 
 export interface EntriesState {
   entries: Entry[];
@@ -13,50 +9,41 @@ export interface EntriesState {
 
 const ENTRIES_INITIAL_STATE: EntriesState = {
   entries: [],
-}
+};
 
-export const EntriesProvider:FC<PropsWithChildren> = ({ children }) => {
-
+export const EntriesProvider: FC<PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = useReducer(entriesReducer, ENTRIES_INITIAL_STATE);
 
-  const addNewEntry = (description: string) => {
-    const newEntry: Entry = {
-      _id: uuidv4(),
-      description: description,
-      createdAt: Date.now(),
-      status: 'pending'
-    }
+  const addNewEntry = async (description: string) => {
 
-    dispatch({type: '[Entry] - Add-Entry', payload: newEntry})
+    const { data } = await entriesApi.post<Entry>('/entries', {description: description});
 
-  }
+    dispatch({ type: "[Entry] - Add-Entry", payload: data });
+  };
 
   const updateEntry = (entry: Entry) => {
-
-    dispatch({ type: '[Entry] - Entry-Updated', payload: entry })
-
-  }
+    dispatch({ type: "[Entry] - Entry-Updated", payload: entry });
+  };
 
   const refreshEntries = async () => {
-    const { data } = await entriesApi.get<Entry[]>('/entries');
-    dispatch({type: '[Entry] - Refresh-Data', payload: data})
-  }
+    const { data } = await entriesApi.get<Entry[]>("/entries");
+    dispatch({ type: "[Entry] - Refresh-Data", payload: data });
+  };
 
   useEffect(() => {
     refreshEntries();
-  }, [])
-  
+  }, []);
 
   return (
-    <EntriesContext.Provider value={{
-      ...state,
+    <EntriesContext.Provider
+      value={{
+        ...state,
 
-      // Methods
-      addNewEntry,
-      updateEntry,
-      
-    }}>
-      { children }
+        // Methods
+        addNewEntry,
+        updateEntry,
+      }}>
+      {children}
     </EntriesContext.Provider>
-  )
-}
+  );
+};
