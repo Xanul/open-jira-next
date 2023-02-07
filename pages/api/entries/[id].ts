@@ -35,11 +35,10 @@ const updateEntry = async ( req: NextApiRequest, res: NextApiResponse<Data> ) =>
   await db.connect();
 
   const entryToUpdate = await Entry.findById( id );
-  console.log(entryToUpdate);
 
   if ( !entryToUpdate ) {
-    return res.status(400).json({message: 'No se encontro entrada con ese id ' + id});
     await db.disconnect();
+    return res.status(400).json({message: 'No se encontro entrada con ese id ' + id});
   }
 
   const {
@@ -47,8 +46,21 @@ const updateEntry = async ( req: NextApiRequest, res: NextApiResponse<Data> ) =>
     status = entryToUpdate.status
   } = req.body;
 
-  const updatedEntry = await Entry.findByIdAndUpdate(id, { description, status }, {runValidators: true, new: true})
+  try {
+    const updatedEntry = await Entry.findByIdAndUpdate(id, { description, status }, {runValidators: true, new: true})  
+    db.disconnect();
+    res.status(200).json( updatedEntry! );
+  } catch (error: any) {
+      db.disconnect();
+      console.log(error);
+      res.status(400).json({ message: error.errors.status.message});
+  }
 
-  res.status(200).json( updatedEntry! );
+  
+  // entryToUpdate.description = description;
+  // entryToUpdate.status = status;
+  // await entryToUpdate.save();
+
+  
 
 }
