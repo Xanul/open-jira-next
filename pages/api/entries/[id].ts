@@ -6,6 +6,7 @@ import { Entry, IEntry } from '../../../models';
 type Data = 
   | {message: string}
   | IEntry
+  | IEntry[]
 
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
@@ -20,12 +21,40 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
 
     case 'PUT':
       return updateEntry(req, res);
+      
+    case 'GET':
+      return getEntry(req, res);
 
     default:
       return res.status(400).json({message: 'Metodo no existe'});
 
   }
   
+}
+
+const getEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+
+  const { id } = req.query;
+
+  await db.connect();
+
+  try {
+
+    const foundEntry = await Entry.findById(id);
+    await db.disconnect();
+    return res.status(200).json(foundEntry!);
+
+  } catch (error:any) {
+    
+      await db.disconnect();
+      console.log(error);
+      return res.status(400).json({ message: error.errors.status.message})
+    
+  }
+
+
+  
+
 }
 
 const updateEntry = async ( req: NextApiRequest, res: NextApiResponse<Data> ) => {
