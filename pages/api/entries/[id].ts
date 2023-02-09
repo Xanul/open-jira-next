@@ -45,15 +45,12 @@ const getEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     return res.status(200).json(foundEntry!);
 
   } catch (error:any) {
-    
+
       await db.disconnect();
       console.log(error);
       return res.status(400).json({ message: error.errors.status.message})
     
   }
-
-
-  
 
 }
 
