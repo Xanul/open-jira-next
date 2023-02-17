@@ -1,4 +1,5 @@
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, FC, useMemo, useState } from 'react';
+import { GetServerSideProps } from 'next'
 import {
   capitalize,
   Button,
@@ -19,14 +20,19 @@ import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Layout } from "../../components/layouts";
 import { EntryStatus } from "../../interfaces";
+import mongoose from 'mongoose';
 
 
 const validStatus: EntryStatus[] = ["pending", "in-progress", "finished"];
 
+interface Props {
+  age: number
+}
 
-
-export const EntryPage = () => {
+export const EntryPage:FC<Props> = ( props ) => {
   
+  console.log({props});
+
   const [inputValue, setInputValue] = useState('');
   const [status, setStatus] = useState<EntryStatus>('pending');
   const [touched, setTouched] = useState(false);
@@ -113,5 +119,28 @@ export const EntryPage = () => {
     </Layout>
   );
 };
+
+
+
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+
+  const { id } = params as { id: string };
+
+  if ( !mongoose.isValidObjectId(id) ) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {
+      id
+    }
+  }
+}
 
 export default EntryPage;
