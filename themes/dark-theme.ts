@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material";
-import { red } from "@mui/material/colors";
+import { red, pink } from "@mui/material/colors";
 
 // Creating a dark theme with options using the default primary and 
 // background color
