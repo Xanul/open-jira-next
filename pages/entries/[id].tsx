@@ -28,12 +28,10 @@ interface Props {
   entry: Entry
 }
 
-export const EntryPage:FC<Props> = ( props ) => {
-  
-  console.log({props});
+export const EntryPage:FC<Props> = ( { entry } ) => {
 
-  const [inputValue, setInputValue] = useState('');
-  const [status, setStatus] = useState<EntryStatus>('pending');
+  const [inputValue, setInputValue] = useState(entry.description);
+  const [status, setStatus] = useState<EntryStatus>(entry.status);
   const [touched, setTouched] = useState(false);
   const isInvalid = useMemo(() => inputValue.length <= 0 && touched, [inputValue, touched])
 
@@ -50,14 +48,14 @@ export const EntryPage:FC<Props> = ( props ) => {
   }
 
   return (
-    <Layout title="... ... ...">
+    <Layout title={ inputValue.substring(0,20) + "..." }>
       <>
         <Grid container justifyContent="center" sx={{ marginTop: 2 }}>
           <Grid item xs={12} sm={8} md={6}>
             <Card>
               <CardHeader
                 title={ (inputValue.length <= 0) ? "Titulo" : `${inputValue}` }
-                subheader={`Creada hace: ....minutos`}
+                subheader={ `Creada hace: ${entry.createdAt}` }
               />
               <CardContent>
                 <TextField
@@ -139,7 +137,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   return {
     props: {
-      entry: JSON.stringify(entry._id)
+      entry
     }
   }
 }
