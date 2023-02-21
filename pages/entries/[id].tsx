@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useMemo, useState } from 'react';
+import { ChangeEvent, FC, useContext, useMemo, useState } from 'react';
 import { GetServerSideProps } from 'next'
 import {
   capitalize,
@@ -21,6 +21,8 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { Layout } from "../../components/layouts";
 import { Entry, EntryStatus } from "../../interfaces";
 import { dbEntries } from '../../database';
+import { EntriesContext } from '../../context/entries';
+
 
 const validStatus: EntryStatus[] = ["pending", "in-progress", "finished"];
 
@@ -30,10 +32,15 @@ interface Props {
 
 export const EntryPage:FC<Props> = ( { entry } ) => {
 
+  //todo: usar use memo para no refrescar el entry?
+
   const [inputValue, setInputValue] = useState(entry.description);
   const [status, setStatus] = useState<EntryStatus>(entry.status);
   const [touched, setTouched] = useState(false);
-  const isInvalid = useMemo(() => inputValue.length <= 0 && touched, [inputValue, touched])
+  const isInvalid = useMemo(() => inputValue.length <= 0 && touched, [inputValue, touched]);
+
+  const { updateEntry } = useContext(EntriesContext);
+  
 
   const onInputValueChange = ( event: ChangeEvent<HTMLInputElement> ) => {
     setInputValue( event.target.value )
@@ -44,7 +51,16 @@ export const EntryPage:FC<Props> = ( { entry } ) => {
   }
 
   const onSave = () => {
-    console.log({inputValue, status});
+
+    if( inputValue.trim().length === 0 ) return;
+
+    const updatedEntry:Entry = {
+      ...entry,
+      status,
+      description: inputValue
+    }
+
+    updateEntry( updatedEntry, true );
   }
 
   return (
