@@ -11,6 +11,7 @@ type Data =
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 
+  console.log(req.method);
   const {id} = req.query;
 
   if ( !mongoose.isValidObjectId(id) ) {
@@ -24,6 +25,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
       
     case 'GET':
       return getEntry(req, res);
+    
+    case 'DELETE':
+      return deleteEntry(req, res);
 
     default:
       return res.status(400).json({message: 'Metodo no existe'});
@@ -81,12 +85,32 @@ const updateEntry = async ( req: NextApiRequest, res: NextApiResponse<Data> ) =>
       console.log(error);
       res.status(400).json({ message: error.errors.status.message});
   }
-
-  
   // entryToUpdate.description = description;
   // entryToUpdate.status = status;
   // await entryToUpdate.save();
+}
 
+const deleteEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   
+  const { id } = req.query;
+  
+  try {
+    
+    await db.connect();
+    const resDataFromDB = await Entry.findByIdAndDelete(id);
+    if( resDataFromDB ) {
+      res.status(200).json({ message: "Entry borrada correctamente " + resDataFromDB});
+    } else {
+      res.status(400).json({message: "No existe entrada con ese ID"});
+    }
+    
+    await db.disconnect();
+
+  } catch (error: any) {
+    console.log(error);
+    await db.disconnect();
+    res.status(400).json({message: error.errors.status.message})
+  }
+
 
 }

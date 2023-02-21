@@ -39,9 +39,6 @@ export const EntriesProvider: FC<PropsWithChildren> = ({ children }) => {
           }
         })
       }
-      
-
-    
     } catch (error) {
       console.log({error});
     }
