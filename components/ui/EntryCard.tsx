@@ -1,4 +1,5 @@
 import { Card, CardActionArea, CardActions, CardContent, Typography } from '@mui/material'
+import { useRouter } from 'next/router';
 import React, { FC, DragEvent, useContext } from 'react'
 import { UiContext } from '../../context/ui';
 import { Entry } from '../../interfaces'
@@ -9,19 +10,23 @@ interface Props {
 
 export const EntryCard:FC<Props> = ({ entry }) => {
 
-  const { startDragging, endDragging } = useContext(UiContext)
+  const { startDragging, endDragging } = useContext(UiContext);
+  const router = useRouter();
+
+
 
   const onDragStart = (event:DragEvent) => {
-
     event.dataTransfer.setData('text', entry._id)
 
     startDragging();
-    // todo: Modificar el estado para indicar que estoy haciendo drag
-
   }
 
   const onDragEnd = ( ) => {
     endDragging()
+  }
+
+  const onClick = () => {
+    router.push(`/entries/${entry._id}`)
   }
 
   return (
@@ -30,6 +35,7 @@ export const EntryCard:FC<Props> = ({ entry }) => {
       draggable
       onDragStart={ onDragStart }
       onDragEnd={ onDragEnd }
+      onClick={ onClick }
     >
       <CardActionArea>
         <CardContent>
