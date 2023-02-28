@@ -44,6 +44,32 @@ export const EntriesProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
+  // Delete entry try
+  const deleteEntry = async ( entry: Entry, showSnackbar = false ) => {
+    try {
+      
+      const { data } = await entriesApi.delete<Entry>(`/entries/${entry._id}`);
+      dispatch({type: "[Entry] - Delete-Entry", payload: data})
+
+      if (showSnackbar) {
+        enqueueSnackbar("Entrada Borrada", {
+          variant: "error",
+          autoHideDuration: 1500,
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right"
+          }
+        })
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+    
+  }
+  //
+
+
   const refreshEntries = async () => {
     const { data } = await entriesApi.get<Entry[]>("/entries");
     dispatch({ type: "[Entry] - Refresh-Data", payload: data });
@@ -61,6 +87,7 @@ export const EntriesProvider: FC<PropsWithChildren> = ({ children }) => {
         // Methods
         addNewEntry,
         updateEntry,
+        deleteEntry
       }}>
       {children}
     </EntriesContext.Provider>

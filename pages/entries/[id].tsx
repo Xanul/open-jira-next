@@ -22,6 +22,7 @@ import { Layout } from "../../components/layouts";
 import { Entry, EntryStatus } from "../../interfaces";
 import { dbEntries } from '../../database';
 import { EntriesContext } from '../../context/entries';
+import { useRouter } from 'next/router';
 
 
 const validStatus: EntryStatus[] = ["pending", "in-progress", "finished"];
@@ -34,12 +35,13 @@ export const EntryPage:FC<Props> = ( { entry } ) => {
 
   //todo: usar use memo para no refrescar el entry?
 
+  const router = useRouter();
   const [inputValue, setInputValue] = useState(entry.description);
   const [status, setStatus] = useState<EntryStatus>(entry.status);
   const [touched, setTouched] = useState(false);
   const isInvalid = useMemo(() => inputValue.length <= 0 && touched, [inputValue, touched]);
 
-  const { updateEntry } = useContext(EntriesContext);
+  const { updateEntry, deleteEntry } = useContext(EntriesContext);
   
 
   const onInputValueChange = ( event: ChangeEvent<HTMLInputElement> ) => {
@@ -61,6 +63,14 @@ export const EntryPage:FC<Props> = ( { entry } ) => {
     }
 
     updateEntry( updatedEntry, true );
+    router.push('/');
+  }
+
+  const onDelete = () => {
+    
+    deleteEntry( entry, true );
+    router.push('/');
+
   }
 
   return (
@@ -120,6 +130,7 @@ export const EntryPage:FC<Props> = ( { entry } ) => {
           </Grid>
         </Grid>
         <IconButton
+          onClick={ onDelete }
           sx={{
             position: "fixed",
             bottom: 30,

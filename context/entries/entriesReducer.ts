@@ -5,6 +5,7 @@ type EntriesActionType =
   | { type: '[Entry] - Add-Entry', payload: Entry }
   | { type: '[Entry] - Entry-Updated', payload: Entry }
   | { type: '[Entry] - Refresh-Data', payload: Entry[] }
+  | { type: '[Entry] - Delete-Entry', payload: Entry }
 
 // The reducer cannot modify the state, it must retrun a new state 
 export const entriesReducer = (state: EntriesState, action: EntriesActionType):EntriesState => {
@@ -33,7 +34,13 @@ export const entriesReducer = (state: EntriesState, action: EntriesActionType):E
       return {
         ...state,
         entries: [...action.payload]
-      }  
+      }
+      
+    case '[Entry] - Delete-Entry':
+      return {
+        ...state,
+        entries: state.entries.filter(entry => entry._id !== action.payload._id)
+      }
 
     default:
       return state;

@@ -11,7 +11,6 @@ type Data =
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 
-  console.log(req.method);
   const {id} = req.query;
 
   if ( !mongoose.isValidObjectId(id) ) {
@@ -99,7 +98,7 @@ const deleteEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     await db.connect();
     const resDataFromDB = await Entry.findByIdAndDelete(id);
     if( resDataFromDB ) {
-      res.status(200).json({ message: "Entry borrada correctamente " + resDataFromDB});
+      res.status(200).json( resDataFromDB );
     } else {
       res.status(400).json({message: "No existe entrada con ese ID"});
     }

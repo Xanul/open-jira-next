@@ -39,7 +39,6 @@ const getEntries = async ( res: NextApiResponse<Data> ) => {
 
 const postEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
-  console.log(req.body);
   const { description = ' ' } = req.body;
 
   const newEntry = new Entry({
